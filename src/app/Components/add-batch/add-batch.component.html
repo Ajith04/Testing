@@ -1,0 +1,30 @@
+<div class="card mx-5">
+    <div class="card">
+        <form [formGroup]="batchName" (ngSubmit)="sendBatchName()" class="flex justify-content-center">
+        <p-floatLabel class="mb-5">
+            <input pInputText id="batchName" formControlName="batchName" />
+            <label for="batchName">Enter New Batch</label>
+        </p-floatLabel>
+        <p-button icon="pi pi-plus" type="submit" severity="success" class="mx-5"/>
+    </form>
+    </div>
+    <p-table [value]="allBatchNames" [tableStyle]="{ 'min-width': '30rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>All Batches</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-allBatchNames>
+            <tr>
+                <td>{{ allBatchNames.batchName }}</td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Total: {{ allBatchNames ? allBatchNames.length : 0 }} 
+                Batch{{ allBatchNames.length > 1 ? 's' : '' }}.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,0 +1,133 @@
+<div class="card m-5">
+    <p-toast />
+    <form [formGroup]="SMForm" (ngSubmit)="sendSM()">
+    <p-stepper orientation="vertical">
+        <p-stepperPanel header="Module Details">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex flex-column justify-content-center align-items-center font-medium gap-3 flex-auto">
+
+                        
+                        <div class="flex gap-3 justify-content-center align-items-center">
+
+                            <div class="card flex justify-content-center">
+                                <p-floatLabel>
+                                    <input pInputText id="title" formControlName="title"/>
+                                    <label for="title">Title</label>
+                                </p-floatLabel>
+                            </div>
+    
+                            <div class="card flex justify-content-center">
+                                <p-dropdown 
+                                    [options]="mainCourseNames" 
+                                    optionLabel="courseName"
+                                    placeholder="Select a Course" 
+                                    [showClear]="true"
+                                    (onChange)="courseNameSelect($event)"
+                                    />
+                            </div>
+                            
+    
+                            <div class="card flex justify-content-center">
+                                <p-dropdown 
+                                    [options]="getLevel" 
+                                    optionLabel="levelName"
+                                    placeholder="Select a Level" 
+                                    [showClear]="true"
+                                    formControlName="level"/>
+                            </div>
+
+                        </div>
+                       
+                        <div class="flex gap-3 justify-content-center align-items-center">
+
+                            <div class="card flex justify-content-center">
+                                <p-dropdown 
+                                    [options]="batchNames" 
+                                    optionLabel="batchName"
+                                    placeholder="Select a Batch" 
+                                    [showClear]="true"
+                                    formControlName="batch"
+                                    />
+                            </div>
+    
+                            <p-calendar  
+                                [showIcon]="true" 
+                                [showOnFocus]="false" 
+                                inputId="buttondisplay" 
+                                placeholder="Select Date"
+                                formControlName="date"
+                                />
+                            
+                        </div>
+                       
+
+                    </div>
+                </div>
+                <div class="flex py-4 justify-content-end">
+                    <p-button label="Next" (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Upload Module">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <div class="card flex justify-content-center">
+                            <p-fileUpload 
+                                mode="basic" 
+                                multiple="true"
+                                chooseLabel="Upload" 
+                                chooseIcon="pi pi-upload"
+                                maxFileSize="1000000" 
+                                (onSelect)="onSelect($event)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex py-4 justify-content-between">
+                    <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+                    <p-button label="Next" (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Description">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+                <div class="flex flex-column">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium p-3">
+                        <div class="card">
+                            <p-editor [style]="{ height: '320px' }" formControlName="description" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex py-4 justify-content-between">
+                    <p-button label="Back" (onClick)="prevCallback.emit()" />
+                    <p-button label="Send" severity="success" type="submit"/>
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+    </p-stepper>
+</form>
+</div>
+
+
+
+<div class="card my-5">
+    <h3 class="text-center">Upload History</h3>
+    <p-timeline [value]="studyMaterials">
+        <ng-template pTemplate="content" let-studyMaterials>
+            {{studyMaterials.date | date : 'dd/MMM/yyyy'}} <i class="pi pi-angle-right mr-3"></i> {{studyMaterials.title}} <i class="pi pi-angle-right mr-3"></i> 
+            {{studyMaterials.course}} <i class="pi pi-angle-right mr-3"></i> 
+            {{studyMaterials.batchName}} <i class="pi pi-angle-right mr-3"></i> 
+
+            <a *ngFor="let file of studyMaterials.files; let i = index" href="" [download]="file.file">
+                <i class="pi pi-download mr-3"></i>
+            </a>
+            
+        </ng-template>
+    </p-timeline>
+   
+</div>
+
+<p-scrollTop />
+
+

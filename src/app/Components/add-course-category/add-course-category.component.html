@@ -1,0 +1,30 @@
+<div class="card mx-5">
+    <div class="card">
+        <form [formGroup]="categoryName" (ngSubmit)="sendCategoryName()" class="flex justify-content-center">
+        <p-floatLabel class="mb-5">
+            <input pInputText id="categoryName" formControlName="categoryName" />
+            <label for="categoryName">Enter New Category</label>
+        </p-floatLabel>
+        <p-button icon="pi pi-plus" type="submit" severity="success" class="mx-5"/>
+    </form>
+    </div>
+    <p-table [value]="allCategoryNames" [tableStyle]="{ 'min-width': '30rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>All Category Names</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-allCategoryNames>
+            <tr>
+                <td>{{ allCategoryNames.categoryName }}</td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Total: {{ allCategoryNames ? allCategoryNames.length : 0 }} 
+                {{ allCategoryNames.length > 1 ? 'Categories' : 'Category' }}.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

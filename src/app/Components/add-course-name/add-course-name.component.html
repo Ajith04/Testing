@@ -1,0 +1,30 @@
+<div class="card mx-5">
+    <div class="card">
+        <form [formGroup]="courseName" (ngSubmit)="sendCourseName()" class="flex justify-content-center">
+        <p-floatLabel class="mb-5">
+            <input pInputText id="courseName" formControlName="name" />
+            <label for="courseName">Enter New Course Name</label>
+        </p-floatLabel>
+        <p-button icon="pi pi-plus" type="submit" severity="success" class="mx-5"/>
+    </form>
+    </div>
+    <p-table [value]="allCourseNames" [tableStyle]="{ 'min-width': '30rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>All Course Names</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-allCourseNames>
+            <tr>
+                <td>{{ allCourseNames.name }}</td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Total: {{ allCourseNames ? allCourseNames.length : 0 }} 
+                Course Name{{ allCourseNames.length > 1 ? 's' : '' }}.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

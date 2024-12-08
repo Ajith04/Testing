@@ -1,0 +1,35 @@
+<div class="card mx-5">
+    <p-table [value]="allExpenses" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                All Expenses
+                <p-button icon="pi pi-refresh" (onClick)="getAllExpenses()"/>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Receipt</th>
+                <th>Description</th>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-allExpenses>
+            <tr>
+                <td>{{allExpenses.title}}</td>
+                <td>{{allExpenses.date | date: 'dd/MMM/yyyy'}}</td>
+                <td>{{allExpenses.amount | currency : 'Rs. '}}</td>
+                <td><p-image *ngFor="let image of allExpenses.receipts" [src]="'data:image/jpeg;base64,' + image.receipt" width="30" class="mr-2" [preview]="true"/></td>
+                <td>{{allExpenses.description}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Total: {{allExpenses ? allExpenses.length : 0 }} Expenses.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+

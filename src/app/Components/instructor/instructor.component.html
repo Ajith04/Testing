@@ -1,0 +1,142 @@
+<p-toast />
+<p-confirmDialog />
+
+<div class="card mx-5">
+    <p-table [value]="allInstructors" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                All Instructors
+                <p-button icon="pi pi-refresh" (onClick)="getAllInstructors()"/>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Avatar</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Rating</th>
+                <th>Date of Join</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Known Courses</th>
+                <th>Assigned Courses</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-allInstructors>
+            
+            <tr>
+                <td><p-image [src]="'data:image/jpeg;base64,' + allInstructors.avatar" width="60" class="" [preview]="true"/></td>
+                <td>{{allInstructors.instructorName}}</td>
+                <td>{{allInstructors.description}}</td>
+                <td><p-rating [readonly]="true" [cancel]="false" /></td>
+                <td>{{allInstructors.dateOfJoin | date: 'dd/MMM/yyyy'}}</td>
+                <td>{{allInstructors.mobile}}</td>
+                <td>{{allInstructors.email}}</td>
+                <td>
+                    <p-tag *ngFor="let singleKnowCourse of allInstructors.instructorKnowCourseResponses" class="mr-1 mb-1 flex flex-wrap">{{singleKnowCourse.name}}</p-tag></td>
+                <td>
+                    <span *ngIf="allInstructors.instructorAssignedCourseResponses.length > 0 else noAssigned">
+                        <p-tag *ngFor="let singleAssignedCourse of allInstructors.instructorAssignedCourseResponses" class="mr-1 mb-1 flex flex-wrap">{{singleAssignedCourse.courseName}}</p-tag>
+                    </span>
+                    <ng-template #noAssigned><div class="text-center">No Courses Assigned Yet!</div></ng-template>
+                    
+                </td>
+                <td>
+                    <div class="flex mr-2">
+                        <p-button icon="pi pi-pen-to-square" (onClick)="showSingleInstructor(allInstructors.instructorId)"/>
+                        <p-button icon="pi pi-times" severity="danger" (onClick)="deleteInstructor($event, allInstructors.instructorId)" />
+                    </div>
+                </td>
+
+            </tr>
+           
+        </ng-template>
+        
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                Total: {{ allInstructors ? allInstructors.length : 0 }} 
+                Instructor{{ allInstructors.length > 1 ? 's' : '' }}.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Edit Instructor" [modal]="true" [(visible)]="updateInstructorVisible" [style]="{ width: '30rem' }">
+        <div class="mt-1 mb-5 flex gap-5">
+            <div class="flex flex-column">
+            <div class="relative mb-3">
+            <img [src]="'data:image/jpeg;base64,' + singleInstructor?.avatar" alt="" height="150px" width="130px" class="align-self-center">
+            <p-fileUpload 
+                mode="basic" 
+                chooseIcon="pi pi-plus-circle"
+                accept="image/*" 
+                maxFileSize="1000000" 
+                (onSelect)="onFileSelect($event)" 
+                class="absolute z-1 right-0 bottom-0"
+                [disabled]="isEdit"
+                />
+                </div>
+                
+            <p-rating [readonly]="true" [cancel]="false" class="align-self-center"/>
+            </div>
+            
+            <div class="flex flex-column">
+                <h3>{{singleInstructor?.instructorName}}</h3>
+                    <textarea 
+                        rows="5"
+                        cols="27" 
+                        pInputTextarea
+                        [disabled]="isEdit"
+                        [(ngModel)]="formData.description"
+                        >
+
+                    </textarea>
+            </div>
+        </div>
+
+            
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="title" class="font-semibold w-6rem">Date of Join</label>
+            <label for="title" class="w-6rem">{{singleInstructor?.dateOfJoin | date : 'dd/MMM/yyyy'}}</label>
+        </div>
+
+    
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="mobile" class="font-semibold w-6rem">Mobile</label>
+            <input pInputText id="mobile" class="flex-auto" autocomplete="off" [disabled]="isEdit" [(ngModel)]="formData.mobile"/>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="email" class="font-semibold w-6rem">Email</label>
+            <input pInputText id="email" class="flex-auto" autocomplete="off" [disabled]="isEdit" [(ngModel)]="formData.email"/>
+        </div>
+
+        <div class="flex gap-3">
+            <label for="email" class="font-semibold w-6rem">Known Courses</label>
+                <p-multiSelect
+                    [options]="courseNames" 
+                    optionLabel="name"
+                    placeholder="Select Courses"
+                    [(ngModel)] = "formData.knownCourses"
+                    [disabled]="isEdit"
+                    
+                    />
+        </div>
+        
+        <div class="flex justify-content-between mt-5">
+            <div class="flex flex-column w-10rem">
+                <label for="email" class="font-semibold w-6rem text-center mb-2 align-self-center">{{editText}}</label>
+                <p-inputSwitch class="align-self-center" [(ngModel)]="checked" (click)="editBtn()"/>
+            </div>
+            <div class="flex gap-2 align-items-center">
+                <p-button label="Cancel" severity="secondary" (onClick)="updateInstructorVisible = false" />
+                <p-button label="Update" [disabled]="isEdit" (onClick)="updateInstructor()"/>
+                </div>
+        </div>
+    </p-dialog>
+</div>

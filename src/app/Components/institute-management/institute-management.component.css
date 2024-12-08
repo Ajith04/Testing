@@ -1,0 +1,8 @@
+:host ::ng-deep {
+    .speeddial-linear-demo {
+        .p-speeddial-direction-down {
+            left: calc(50% - 2rem);
+            top: 0;
+        }
+    }
+}
